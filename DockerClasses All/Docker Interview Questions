@@ -12,4 +12,13 @@ how to see running containers
 how to check container logs
 explain about docker architecture
 refer all docker commands
+What is Dockerfile
+what is the diff b/w copy and add
+diff b/w env and arg
+what is the command to build a Dockerfile
+CMD vs ENTRYPOINT
+Write a Dockerfile for Python application
+What is docker registry
+How to push docker images to registry
+
 
