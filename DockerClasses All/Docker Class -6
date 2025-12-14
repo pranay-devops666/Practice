@@ -127,3 +127,28 @@ use accounts;
 show tables;
 
 
+NOW DOCKERHUB TOPIC
+
+first go to dockerhub login
+
+create one repo in dockerhub
+now we need to push the image into this created repo in dockerhub
+
+go to ec2-instance
+
+
+docker tag appimage pranay413/myrepo:appimage
+docker tag appimage(image name) dockerhubusername/reponame tagname
+
+here we need to login in ec2-instance
+
+docker login
+password: dockerhub password
+
+docker push pranay413/myrepo:appimage:appimage
+
+image has been got pushed into a dockerhub
+
+
+
+
