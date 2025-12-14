@@ -1,1 +1,57 @@
-seven
+3-TIER APP DEPLOYMENT USING JENKINS AND DOCKERFILE REGISTRY
+
+
+
+
+pipeline {
+    agent any
+    tools {
+        maven 'mymaven'
+    }
+    stages {
+        stage ("Code") {
+            steps {
+                git "https://github.com/pranay-devops666/dockerwebapp.git"
+            }
+        }
+        stage ("CAQ") {
+            steps {
+                withSonarQubeEnv("mysonar") {
+                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=MyProject"
+                }
+            }
+        }
+        stage ("Build") {
+            steps {
+                sh 'mvn clean package'
+                sh 'cp -r target Docker-app'
+            }
+        }
+        stage ("Artifact") {
+            steps {
+                nexusArtifactUploader artifacts: [[artifactId: 'vprofile', classifier: '', file: 'target/vprofile-v2.war', type: 'war']], credentialsId: 'nexuspassword', groupId: 'com.visualpathit', nexusUrl: '54.197.149.86:8081/', nexusVersion: 'nexus3', protocol: 'http', repository: 'myrepo', version: 'v2'
+            }
+        }
+        stage ("Dockerfile") {
+            steps {
+                sh 'docker build -t appimage1 Docker-app'
+                sh 'docker build -t dbimage1 Docker-db'
+            }
+        }
+        stage ("Deploy") {
+            steps {
+                sh 'docker run -d --name devopsdb -p 3306:3306 dbimage'
+                sh 'docker run -itd --name appcont1 -p 1237:8080 --link devopsdb:mysqlcon appimage1'
+            }
+        }
+    }
+    post {
+        success {
+            script {
+                mail to: 'gorantlapranay8@gmail.com',
+                    subject: "SUCCESS: Jenkins Job ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: "Build SUCCESSFUL"
+            }
+        }
+    }
+}
