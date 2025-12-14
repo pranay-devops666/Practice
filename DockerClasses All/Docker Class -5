@@ -1,2 +1,131 @@
 DOCKER FILE FOR JAVA & NODE JS APPLICATION AND DB
 
+firts we build the CODE using maven
+after build the code using maven 
+we will get war file
+if we want to deploy this war file we used TOMCAT
+
+
+steps to be followed to do DOCKER FILE FOR JAVA following below
+install git
+first go to github take java repository and clone in ec2-instance by command below
+git clone github url ----> enter
+then go to master branch
+
+install maven to build the code
+mvn -v ---------> to chekc maven
+mvn clean package ----> command to get war file in target folder
+
+
+BUILD SUCCESS
+
+go to target folder and do check war file came or not
+cd target ----> wra file exist
+
+
+we need to deploy this war file in TOMCAT
+no need to take another instance for TOMCAT we have a official image for TOMCAT in dockerhub we can use it for writing Dockerfile for it
+
+vim Dockerfile
+FROM tomcat:8.0.20-jre8
+EXPOSE 8080
+COPY target/*.war /usr/local/tomcat/webapps/
+
+in here /usr/local/tomcat(uptto tomcat is a official image of tomcat) webapps will be present by default
+
+docker build -t java-app:v1 .-----------> to build image
+docker run -itd --name cont1 -p 1234:8080 java-app:v1----------> to create container by using image
+
+
+access the application by giving ec2-instance publicIP:container number(1234)
+
+TOMCAT application has been launched
+but we didn't gave any credentials for TOMCAT in manager app
+here the steps to do
+
+we need to send this vim tomcat-users.xml file into a container by writing Dockerfile
+then the credintials will be done
+
+open vim Dockerfile
+FROM tomcat:8.0.20-jre8
+EXPOSE 8080
+COPY tomcat-users.xml /usr/local/tomcat/conf/
+COPY target/*.war /usr/local/tomcat/webapps/
+
+docker build -t java-app:v2 .
+docker run -itd --name cont2 -p 1111:8080 java-app:v2
+
+tomcat credentials are below
+username: tomcat
+password:admin@123
+
+TOMCAT application has launched
+
+
+what we done is 
+first we get the code from github
+we do build the code with maven
+we copied the war file into a container by writing Dockerfie and copied the TOMCAT credentials as well by writing Dockerfile
+
+
+NOW WE WILL DO SAME STEPS FOR NODE JS CODE APPLICATION
+
+First we will get nodejs code from github
+
+git clone githuburl
+
+here we will write the Dockerfile
+
+vim Dockerfile
+FROM node:16
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 80
+CMD ["node", "index.js"]
+
+docker build -t node-app .
+ddocker run -itd --name cont-5 -p 3333:80 node-app
+
+access the application by giving ec2-instance publicIP:container number(3333)
+
+
+NOW WE WILL DO FOR DATABASE
+
+first go to home
+create one folder name it as database
+mkdir database
+cd database
+create a file for sql name it as init.sql
+
+
+vim init.sql
+create database pranay;
+use pranay;
+create table babu;
+create table devops;
+
+now write Dockerfile for Database
+
+vim Dockerfile
+FROM mysql/mysql-server:5.7
+ENV MYSQL_USER=root
+ENV MYSQL_ROOT_PASSWORD=babu@123
+EXPOSE 3306
+COPY init.sql /etc/mysql/conf.d/
+
+docker build -t db-image:v1 .
+NOTE: IMportant point need to remember here 
+while creating a container here for DATABASE we should not use give -itd we need to give only -d why becaise containers doesn't come running state if we give -itd means
+
+docker run -d --name dbcont -p 5555:3306 db-image:v1
+docker exec -it dbcont bash--------> command to eneter into db container
+mysql -u root -p--------> command to login databse
+password ------>babau@123
+show databses;
+
+
+
+
+
