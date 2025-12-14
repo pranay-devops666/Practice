@@ -1,5 +1,5 @@
 Vim Dockerfile 
-RUN ubuntu
+FROM ubuntu
 LABEL this is my first image
 MAINTAINER name pranay
 COPY app.java /opt/
