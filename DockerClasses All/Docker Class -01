@@ -9,12 +9,13 @@ docker version                           --------> command to check docker versi
 docker run ubuntu(base image)            --------> command to create image with base image ubuntu
 docker pull shaikmustafa/paytm:bus       --------> command to pull image from dockerhub shaikmustafa/paytm(this is the image name) :bus(this is the image version)
 docker images                            --------> command to check created images
+docker inspect imagename/image ID        --------> command to know full information of the image
 docker run -d --name bus -p 1431:80 shaikmustafa/paytm:bus 
+--------> command to create container with imagename along with containernumber:port number to access the application after container get created
 docker stop imagename                    --------> command to stop image
 docker rm imagename                      --------> command to delete image
-docker rmi $(docker images -q)           --------> command to delete all images at a time
---------> command to create container with image name to access the application after container get created
-here -d(detach/demaon)
+docker rmi $(docker images -q)           --------> command to delete all images at a time here -d(detach/demaon)
+docker run -itd --name containername imagename   --------> command to create a container with baseimage/already created image
 docker ps                                 --------> command to check the container is created or not
 docker ps -a                              --------> command to check running container ex:container is up state, exited state, stoped state
 docker logs bus(bus is container name)    --------> command to track who is getting accessing the application
