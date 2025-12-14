@@ -1,0 +1,23 @@
+Total class is all about to create images, containers
+
+To see the list of images : docker images
+2.  To pull the image : docker pull image-name
+3.  To create a container : docker run -d --name cont-name -p host-port:container-port
+image
+4.  To see running containers : docker ps
+5.  To see all containers : docker ps -a
+6.  To stop the container : docker stop cont-name
+7.  To stop multiple containers : docker stop cont-1 cont-2 cont-3
+8.  To stop all containers : docker stop $(docker ps)
+9.  To start a container : docker start cont-name
+10. To start multiple containers : docker start cont-1 cont-2 cont-3
+11. To start all containers : docker start $(docker ps -a)
+12. To remove a stopped container : docker rm cont-name
+13. To remove a running container : docker rm -f cont-name
+14. To remove all stopped containers : docker rm $(docker ps -a)
+15. To remove an image : docker rmi image-name
+16. To remove unused images : docker rmi $(docker images)
+17. To get the full info about container : docker inspect cont-name
+18. To get the container logs : docker logs cont-name
+19. To enter into the container : docker exec -it cont-name bash
+20. To get full info about image : docker inspect image image-name
