@@ -1,0 +1,7 @@
+Vim Dockerfile 
+RUN ubuntu
+LABEL this is my first image
+MAINTAINER name pranay
+COPY app.java /opt/
+
+dokcer build -t myimage:v1 . ------------> command to build Dockerfile here myimage:v1(myimage means imagename and :v2 means version v2)
