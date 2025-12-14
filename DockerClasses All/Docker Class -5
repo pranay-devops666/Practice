@@ -113,7 +113,7 @@ FROM mysql/mysql-server:5.7
 ENV MYSQL_USER=root
 ENV MYSQL_ROOT_PASSWORD=babu@123
 EXPOSE 3306
-COPY init.sql /etc/mysql/conf.d/
+COPY init.sql /etc/mysql/conf.d/db_backup.sql
 
 docker build -t db-image:v1 .
 NOTE: IMportant point need to remember here 
@@ -124,6 +124,8 @@ docker exec -it dbcont bash--------> command to eneter into db container
 mysql -u root -p--------> command to login databse
 password ------>babau@123
 show databses;
+use pranay;
+show tables;
 
 
 
