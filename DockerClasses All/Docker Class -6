@@ -1,1 +1,129 @@
 3-TIER APP DEPLOYMENT USING JENKINS AND DOCKERFILE REGISTRY
+
+
+first install Docker, java-17, git and maven 
+
+get code from github 
+git clone 'url'
+cd dockerwebapp --------> in this github repo we will have 2 main folders 
+1. Docker-app ----------> for application code
+2. Docker-db -----------> for database code
+git checkout master
+mvn clean package
+
+BUILD SUCCESS
+
+after build got success we will get war file in target folder
+
+go to folder name as Docker-app
+cd Docker-app
+remove this file multistage
+rm -rf multistage
+
+here we need to write Dockerfile
+
+vim Dockerfile
+FROM tomcat:8-jre11
+RUN rm -rf /usr/local/tomcat/webapps/*
+COPY target/vprofile-v2.war /usr/local/tomcat/webapps/ROOT.war
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
+
+dont build Dcokerfile here why because target folder is not there here 
+we need to copy the target folder to here first by giving command as below
+
+go to dockerwebapp folder first
+
+cd ..
+cp -r target Docker-app
+now to to Docker-app
+cd Docker-app
+
+now build the dockerfile here
+
+docker build -t appimage .
+
+now go to dockerwebapp folder again
+
+cd ..
+got to folder name Docker-db
+cd Docker-db
+now here we need to write Dockerfile here
+
+vim Dockerfile
+FROM mysql:5.7.25
+
+ENV MYSQL_ROOT_PASSWORD="devopspassword"
+ENV MYSQL_DATABASE="accounts"
+
+ADD db_backup.sql docker-entrypoint-initdb.d/db_backup.sql
+
+now build the Dockerfile here
+
+docker build -t dbimage .
+
+now we got here 2 images 
+1. appimage in Docker-app folder
+2. dbimage in Docker-db folder
+based on these 2 images we need to create a container to run tha application 
+
+here the sigma rule scenoria is  always first we need to create database
+
+docker run -d --name devopsdb -p 3306:3306 dbimage (in here containername must be devopsdb only and should use -d only, should not use -itd while creating a container)
+
+docker exec -it devopsdb bash
+
+mysql -u root -p
+password:devopspassword (if we open Dockerfile in Docker-db dolder we can see credentials)
+show databases;
+use accounts;
+show tables;
+
+for example if we kept any data in application it will store in user
+if we want to see means command is below
+
+select *from user; --------> to view data in confused order
+select *from user\G;  --------> to view data in table order
+
+if we give ctrl+d 2 times we can do exit from the container
+
+NOW WE NEED TO CREATE ANOTHER CONTAINER FOR APPLICATION
+
+go to Docker-app folder
+cd Docker-app
+now here need create container for previously written the file for Dockerfile
+vim Dockerfile
+FROM tomcat:8-jre11
+RUN rm -rf /usr/local/tomcat/webapps/*
+COPY target/vprofile-v2.war /usr/local/tomcat/webapps/ROOT.war ----------->(in here we are doing delete by default path configurations and keeping the default path to our war file by doing this credentials will not gonna ask in TOMCAT)
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
+
+docker run -itd --name appcount -p 1111:8080 appimage
+
+we got an error while accessing the application with publicIP:containernumber1111
+
+why this error happens means we created application container,database container as well but application is not linked to database container
+
+now we will do make connetcion application conatiner to database container by giving this below command
+
+remove appcont first 
+docker rm -f appcount
+
+docker run -itd --name appcont -p 1111:8080 --link devopsdb:mysqlcon appimage
+
+now application has been able to access with publicIP:container number(1111)
+
+now the details will be stored in database
+
+to cross check the details in database
+
+docker exec -it devopsdb bash
+
+mysql -u root -p
+password:devopspassword (if we open Dockerfile in Docker-db dolder we can see credentials)
+show databases;
+use accounts;
+show tables;
+
+
