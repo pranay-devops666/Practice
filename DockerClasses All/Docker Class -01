@@ -1,4 +1,78 @@
 Docker Class 1 and folliwing commands 
+ Blogs : 
+link-1: https://docker77.hashnode.dev/docker-introduction-architecture
+link-2: https://docker77.hashnode.dev/mastering-the-art-of-creating-containers
+
+Todays Commands:
+
+
+
+
+yum install docker -y
+
+    2  docker version
+
+    3  systemctl status docker
+
+    4  systemctl start docker
+
+    5  systemctl status docker
+
+    6  docker version
+
+    7  docker pull shaikmustafa/paytm:bus
+
+    8  docker images
+
+    9  docker run -d --name bus -p 1431:80  shaikmustafa/paytm:bus
+
+   10  docker ps
+
+   11  docker logs bus
+
+   12  docker ps
+
+   13  docker pull shaikmustafa/paytm:movie
+
+   14  docker images
+
+   15  docker run -d --name movie -p 1111:80  shaikmustafa/paytm:movie
+
+   16  docker ps
+
+   17  docker pull shaikmustafa/paytm:bank
+
+   18  docker images
+
+   19  docker run -d --name bank -p 2222:80 shaikmustafa/paytm:movie
+
+   20  docker ps
+
+   21  docker rm bank
+
+   22  docker stop bank
+
+   23  docker rm bank
+
+   24  docker ps
+
+   25  docker run -d --name bank -p 2222:80 shaikmustafa/paytm:bank
+
+   26  docker ps
+
+   27  docker stop movie
+
+   28  docker start movie
+
+   29  docker stop bank
+
+   30  docker start banl
+
+   31  docker start bank
+
+   32  docker images
+
+   33  history
 
 yum install docker -y                    --------> command to install docker
 systemctl start docker                   --------> command to start docker after installed the docker
@@ -19,3 +93,6 @@ docker run -itd --name containername imagename   --------> command to create a c
 docker ps                                 --------> command to check the container is created or not
 docker ps -a                              --------> command to check running container ex:container is up state, exited state, stoped state
 docker logs bus(bus is container name)    --------> command to track who is getting accessing the application
+
+
+
