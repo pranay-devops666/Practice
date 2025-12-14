@@ -1,1 +1,110 @@
 DOCKER FILE FOR HTTPD, NGINX AND PYTHON APPLICATION
+following below steps to do all those 
+code---->Dockerfile----->build this Dockerfile------->image will be created----->if we run the image container will be created
+
+first create one folder name as e-comm-app
+go to that folder cd e-com-app
+in this e-com-appfolder create file name as index.html and paste the code in this file and save it
+SOURCE CODE -------> e-commerce app : https://chat.deepseek.com/share/7avbonbpq9vno81bvj(/usr/local/apache2/htdocs/-------> httpd default path)
+search image name as httpd in dockerhub to know the httpd default path
+create another file to write Docker file 
+file name as vim Dockerfile
+in this Dockerfile write Dockerfile components as following below
+
+FROM httpd
+LABEL this is e-com app image
+MAINTAINER name pranay
+EXPOSE 80
+COPY index.html /usr/local/apache2/htdocs/
+(/usr/local/apache2/htdocs/-------> httpd default path)
+
+docker build -t myapp .
+
+docker images
+
+docker run -itd --name e-com -p 1234:80 myapp
+docker ps -a
+docker ps
+copy the public IP of ec2-instance and paste in new tab as public IP:1234 ---------> to access the application with ec2-instance publicIP:containernumber(1234)
+
+
+from starting first line to 26th lines steps all we done for HTTPD 
+
+Now we will do same procedure for NGINX as well
+
+go to home giving command as cd enter
+
+make one folder here 
+name it as version-2e-com-app
+mkdir version-2-ecom-app
+go to that created folder 
+cd version-2-ecom-app
+create two files here 
+1. file for source code name it as index.html
+2. file for Dockerfil name it as Dockerfile
+
+vim index.html
+paste here the source code
+
+vim Dockerfile 
+FROM nginx
+LABEL this is version-2-ecom-app image
+MAINTAINER name pranay
+EXPOSE 80
+COPY index.html /usr/share/nginx/html
+(/usr/share/nginx/html------------->nginx default path)
+
+docker build -t myapp:v2 .
+
+docker run -itd --name v2-cont -p 1111:80 myapp:v2
+copy the public IP of ec2-instance and paste in new tab as public IP:1111 ---------> to access the application with ec2-instance publicIP:containernumber(1111)
+
+
+Now we will do for python application
+
+go to home giving command as cd enter
+
+make one folder here 
+name it as python-app
+mkdir python-app
+go to that created folder 
+cd python-app
+create three files here 
+1. file for source code name it as app.py
+2. for requiremetns.py------> for for python dependencices developers will give this code
+3. file for Dockerfil name it as Dockerfile
+
+vim app.py
+paste here the source code
+
+in vim requiremetns.py
+paste this 3 lines below and save it
+
+
+vim requiremetns.py
+streamlit>=1.28.0
+pandas>=2.0.0
+plotly>=5.17.0
+
+paste and save it
+
+vim Dockerfile
+FROM python:3
+WORKDIR /myapp
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+COPY app.py ./
+EXPOSE 8501
+CMD ["streamlit", "run", "app.py"]
+
+
+docker build -t pyapp:v2 .
+docker run -itd --name pycont4 -p 8503:8501 pyapp:v2
+
+build the Dockerfile 
+image will be created
+run the image container will be created 
+access the application with publicIP:containernumber
+
+
+
