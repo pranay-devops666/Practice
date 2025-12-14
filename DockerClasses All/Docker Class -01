@@ -1,1 +1,8 @@
-Docker Class 1
+Docker Class 1 and folliwing commands 
+
+yum install docker -y
+systemctl start docker
+systemctl restart docker
+systemctl status docker
+docker --version
+docker version
