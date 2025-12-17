@@ -1,0 +1,89 @@
+DOCKER NETWORKS
+
+Todays class notes : https://docker77.hashnode.dev/a-devops-engineers-journey-into-docker-networks
+
+
+Todays commands:
+
+
+1  yum install docker -y && systemctl start docker
+
+    2  docker network ls
+
+    3  docker run -itd --name cont1 -p 1111:80 nginx
+
+    4  docker inspect cont1
+
+    5  docker network ls
+
+    6  docker run -itd --name cont2 -p 2222:80 --network=host  nginx
+
+    7  docker run -itd --name cont3 -p 3333:80 --network=host  nginx
+
+    8  docker run -itd --name cont4 -p 4444:80 --network=host httpd
+
+    9  docker ps
+
+   10  docker ps -a
+
+   11  docker netowkr ls
+
+   12  docker network ls
+
+   13  docker network create app-network
+
+   14  docker network ls
+
+   15  docker network create db-network
+
+   16  docker run -itd --name app-cont -p 1122:80 --network app-network nginx
+
+   17  docker ps
+
+   18  docker inspect app-cont
+
+   19  docker run -itd --name db-cont -p 2233:80 --network db-network nginx
+
+   20  docker inspect db-cont
+
+   21  docker inspect app-cont
+
+   22  docker inspect db-cont
+
+   23  docker exec -it app-cont bash
+
+   24  docker exec -it db-cont bash
+
+   25  docker ps
+
+   26  docker network attach db-network app-cont
+
+   27  docker network connect db-network app-cont
+
+   28  docker inspect app-cont
+
+   29  docker network connect app-network db-cont
+
+   30  docker exec -it db-cont bash
+
+   31  docker exec -it app-cont bash
+
+   32  docker network disconnect app-network db-cont
+
+   33  docker network disconnect db-network app-cont
+
+   34  docker exec -it app-cont bash
+
+   35  docker netowkr
+
+   36  docker network
+
+   37  docker network rm app-network
+
+   38  docker network create flm
+
+   39  docker network rm flm
+
+   40  docker network
+
+   41  history
